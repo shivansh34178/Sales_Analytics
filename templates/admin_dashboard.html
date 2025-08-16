@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Admin Dashboard</h2>
+    <p>Welcome to the Admin Dashboard!</p>
+
+    <h3>Add New Employee</h3>
+    <form method="POST" action="/admin_dashboard">
+        <input type="text" name="username" placeholder="Employee Username" required>
+        <input type="password" name="password" placeholder="Employee Password" required>
+        <input type="text" name="phone_number" placeholder="Phone Number" required>
+        <button type="submit">Add Employee</button>
+    </form>
+
+    <h3>Employee Overview</h3>
+    <table>
+        <tr>
+            <th>Employee Name</th>
+            <th>Customer Count</th>
+            <th>Product Count</th>
+        </tr>
+        {% for emp in employees %}
+        <tr>
+            <td>{{ emp[1] }}</td> <!-- Username -->
+            <td>{{ emp[2] }}</td> <!-- Customer Count -->
+            <td>{{ emp[3] }}</td> <!-- Product Count -->
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/">Logout</a>
+</body>
+</html>
