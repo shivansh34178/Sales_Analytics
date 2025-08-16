@@ -1,0 +1,97 @@
+-- Select the sales_analitics database
+USE sales_analytics;
+
+-- 1. User Table: Stores users with roles
+CREATE TABLE User (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    role ENUM('Admin', 'Analyst', 'Employee') NOT NULL
+);
+
+-- 2. Employee Table: Stores employee information, added by Admin
+CREATE TABLE Employee (
+    employee_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    phone_number VARCHAR(15),
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
+);
+
+-- 3. Customer Table: Holds customer data
+CREATE TABLE Customer (
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_name VARCHAR(100) NOT NULL,
+    added_by_employee_id INT,
+    FOREIGN KEY (added_by_employee_id) REFERENCES Employee(employee_id)
+);
+
+-- 4. Product Table: Details each product line
+CREATE TABLE Product (
+    product_id INT AUTO_INCREMENT PRIMARY KEY,
+    product_name VARCHAR(100) NOT NULL,
+    category VARCHAR(50),
+    vat DECIMAL(5, 2),
+    rating DECIMAL(3, 2)
+);
+
+-- 5. Purchase Table: Records each transaction
+CREATE TABLE Purchase (
+    purchase_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    product_id INT,
+    amount DECIMAL(10, 2) NOT NULL,
+    location VARCHAR(100),
+    payment_method ENUM('Cash', 'Card', 'Online'),
+    purchase_date DATE,
+    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
+    FOREIGN KEY (product_id) REFERENCES Product(product_id)
+);
+-- Use the sales_analytics database
+USE sales_analytics;
+
+-- Drop the existing Customer and Purchase tables if they exist
+DROP TABLE IF EXISTS Purchase;
+DROP TABLE IF EXISTS Customer;
+
+-- 3. Customer Table: Holds customer data
+CREATE TABLE Customer (
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_name VARCHAR(100) NOT NULL,
+    phone_number VARCHAR(15),  -- Added phone number to Customer table
+    added_by_employee_id INT,
+    FOREIGN KEY (added_by_employee_id) REFERENCES Employee(employee_id)
+);
+
+-- 5. Purchase Table: Records each transaction
+CREATE TABLE Purchase (
+    purchase_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    product_id INT,
+    amount DECIMAL(10, 2) NOT NULL,
+    location VARCHAR(100),      -- Place
+    payment_method ENUM('Cash', 'Card', 'Online'),
+    purchase_date DATE,         -- Purchase Date
+    purchase_time TIME,         -- Added purchase time
+    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
+    FOREIGN KEY (product_id) REFERENCES Product(product_id)
+);
+SELECT * FROM Customer;
+
+-- Drop the existing Customer and Purchase tables if they exist
+DROP TABLE IF EXISTS Purchase;
+
+-- 5. Purchase Table: Records each transaction with customer details
+CREATE TABLE Purchase (
+    purchase_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_name VARCHAR(100) NOT NULL,  -- Customer Name
+    phone_number VARCHAR(15),              -- Customer Phone Number
+    product_id INT,
+    amount DECIMAL(10, 2) NOT NULL,
+    location VARCHAR(100),                 -- Place
+    payment_method ENUM('Cash', 'Card', 'Online'),
+    purchase_date DATE,                    -- Purchase Date
+    purchase_time TIME,                    -- Added purchase time
+    FOREIGN KEY (product_id) REFERENCES Product(product_id)
+);
+SELECT * FROM User;
+SELECT * FROM Purchase;
